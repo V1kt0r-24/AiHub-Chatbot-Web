@@ -1,0 +1,118 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.button-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.myButton {
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background: linear-gradient(145deg, #4CAF50, #45a049);
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);
+    transition: all 0.3s ease;
+    min-width: 150px;
+}
+
+.myButton:hover {
+    background: linear-gradient(145deg, #45a049, #3d8b40);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+}
+
+.myButton:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+}
+
+.myButton.secondary {
+    background: linear-gradient(145deg, #2196F3, #1976D2);
+    box-shadow: 0 6px 15px rgba(33, 150, 243, 0.3);
+}
+
+.myButton.secondary:hover {
+    background: linear-gradient(145deg, #1976D2, #1565C0);
+    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+}
+
+.info-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border-radius: 10px;
+    border-left: 5px solid #4CAF50;
+}
+
+.info-section ul {
+    padding-left: 20px;
+    line-height: 1.6;
+}
+
+.info-section li {
+    margin-bottom: 8px;
+}
+
+p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    .myButton {
+        display: block;
+        margin: 10px auto;
+        width: 80%;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+}
