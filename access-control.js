@@ -1,13 +1,14 @@
-// Access Control System for Chatbot
+// Enhanced Access Control System for Enterprise Chatbot
 class AccessControl {
     constructor() {
         this.allowedOrigins = [
+            'https://aihub.com',
             'https://happy-dune-00f2d1f00.1.azurestaticapps.net',
-            'https://hub.yourdomain.com', // Custom domain when configured
             'http://localhost', // For development
             'http://127.0.0.1'  // For development
         ];
         this.sessionKey = 'chatbot_access_token';
+        this.gatewayHeaders = ['x-forwarded-for', 'x-azure-clientip', 'x-forwarded-host'];
         this.init();
     }
 
@@ -26,7 +27,12 @@ class AccessControl {
     }
 
     checkAccess() {
-        // Method 1: Check referrer
+        // Method 1: Check if coming from Application Gateway
+        if (this.isFromApplicationGateway()) {
+            console.log('✅ Access granted - coming from Application Gateway');
+        }
+        
+        // Method 2: Check referrer
         const referrer = document.referrer;
         console.log('Referrer check:', referrer);
         
@@ -40,15 +46,30 @@ class AccessControl {
             }
         }
 
-        // Method 2: Check for valid access token
+        // Method 3: Check for valid access token
         const token = this.getAccessToken();
         if (token && this.validateToken(token)) {
             console.log('✅ Access granted via valid token');
             return true;
         }
 
-        // Method 3: Check URL parameters (temporary access)
+        // Method 4: Check URL parameters (from Application Gateway)
         const urlParams = new URLSearchParams(window.location.search);
+        const accessToken = urlParams.get('access_token');
+        const fromHub = urlParams.get('from_hub');
+        
+        if (accessToken && fromHub === 'true' && this.validateAccessToken(accessToken)) {
+            console.log('✅ Access granted via Application Gateway token');
+            this.setAccessToken();
+            // Clean URL but preserve other params
+            const cleanUrl = new URL(window.location);
+            cleanUrl.searchParams.delete('access_token');
+            cleanUrl.searchParams.delete('from_hub');
+            window.history.replaceState({}, document.title, cleanUrl.toString());
+            return true;
+        }
+
+        // Method 5: Check legacy access key
         const accessKey = urlParams.get('access_key');
         if (accessKey && this.validateAccessKey(accessKey)) {
             console.log('✅ Access granted via access key');
@@ -60,6 +81,32 @@ class AccessControl {
 
         console.log('❌ Access denied - no valid authentication method');
         return false;
+    }
+
+    isFromApplicationGateway() {
+        // Check for Application Gateway specific headers (simulated)
+        const hasGatewaySignature = 
+            window.location.hostname === 'chatbot.com' || 
+            window.location.search.includes('from_hub=true') ||
+            document.referrer.includes('aihub.com');
+        
+        return hasGatewaySignature;
+    }
+
+    validateAccessToken(token) {
+        // Enhanced token validation for Application Gateway
+        const expectedPattern = /^hub_[a-zA-Z0-9]{32}_\d{13}$/;
+        if (!expectedPattern.test(token)) {
+            return false;
+        }
+        
+        // Extract timestamp from token
+        const parts = token.split('_');
+        const timestamp = parseInt(parts[2]);
+        const now = Date.now();
+        const maxAge = 5 * 60 * 1000; // 5 minutes
+        
+        return (now - timestamp) < maxAge;
     }
 
     validateAccessKey(key) {
