@@ -1,31 +1,52 @@
 {
   "routes": [
     {
-      "route": "/*",
+      "route": "/api/validate-access",
       "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/access-denied.html",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/*",
+      "allowedRoles": ["anonymous"],
+      "headers": {
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      }
     }
   ],
-  "networking": {
-    "allowedIpRanges": [
-      "20.6.51.16/32"
-    ]
+  "navigationFallback": {
+    "rewrite": "/index.html"
   },
   "responseOverrides": {
     "401": {
-      "redirect": "/login"
+      "redirect": "/access-denied.html"
+    },
+    "403": {
+      "redirect": "/access-denied.html"
     },
     "404": {
       "rewrite": "/index.html"
     }
   },
   "mimeTypes": {
-    ".json": "application/json"
+    ".json": "application/json",
+    ".js": "application/javascript",
+    ".css": "text/css"
   },
   "globalHeaders": {
     "X-Frame-Options": "DENY",
     "X-Content-Type-Options": "nosniff",
     "X-XSS-Protection": "1; mode=block",
-    "Strict-Transport-Security": "max-age=31536000; includeSubDomains"
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+    "Referrer-Policy": "strict-origin",
+    "X-Robots-Tag": "noindex, nofollow"
+  },
+  "forwardingGateway": {
+    "allowedForwardedHosts": [
+      "chatbot.yourdomain.com",
+      "happy-dune-00f2d1f00.1.azurestaticapps.net"
+    ]
   }
-
 }
