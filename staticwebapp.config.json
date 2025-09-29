@@ -7,7 +7,7 @@
   ],
   "networking": {
     "allowedIpRanges": [
-      "127.0.2.2/32"
+      "20.6.51.16/32"
     ]
   },
   "responseOverrides": {
