@@ -17,7 +17,7 @@
     }
   ],
   "networking": {
-    "allowedIpRanges": ["APPLICATION_GATEWAY_IP/32"]
+    "allowedIpRanges": ["20.6.51.16/32"]
   },
   "navigationFallback": {
     "rewrite": "/index.html"
