@@ -5,7 +5,7 @@
       "allowedRoles": ["anonymous"]
     },
     {
-      "route": "/access-denied.html",
+      "route": "/access-denied.html", 
       "allowedRoles": ["anonymous"]
     },
     {
@@ -16,6 +16,9 @@
       }
     }
   ],
+  "networking": {
+    "allowedIpRanges": ["20.6.51.16/32"]
+  },
   "navigationFallback": {
     "rewrite": "/index.html"
   },
